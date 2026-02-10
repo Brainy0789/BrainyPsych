@@ -59,6 +59,10 @@ import psychlua.HScript;
 import tea.SScript;
 #end
 
+#if hxwren
+import psychlua.wren.*;
+#end
+
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -264,6 +268,10 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	#if hxwren
+	public var wren:FunkinWren;
+	#end
+
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -420,6 +428,11 @@ class PlayState extends MusicBeatState
 					initHScript(folder + file);
 				#end
 			}
+		#end
+
+		#if hxwren
+		wren = new FunkinWren();
+		wren.execute('test');
 		#end
 
 		// STAGE SCRIPTS
