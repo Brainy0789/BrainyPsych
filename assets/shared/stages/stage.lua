@@ -6,6 +6,8 @@ function makeAndAddSprite(id, image, x, y, sx, sy, scale, above)
 end
 
 function onCreate()
+    switchState('states', 'MainMenuState');
+    setWindowName('test');
     makeAndAddSprite('bg', 'stageback', -600, -200, 0.9, 0.9, 1, false)
     makeAndAddSprite('stageFront', 'stagefront', -650, 600, 0.9, 0.9, 1.1, false)
 

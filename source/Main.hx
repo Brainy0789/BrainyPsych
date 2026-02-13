@@ -59,6 +59,8 @@ class Main extends Sprite
 
 	public function new()
 	{
+		new brainyscript.BrainyScript().execute('print("Hello, world!")');
+		
 		super();
 
 		// Credits to MAJigsaw77 (he's the og author for this code)

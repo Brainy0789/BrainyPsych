@@ -311,6 +311,7 @@ class ChartingState extends MusicBeatState
 			{name: "Section", label: 'Section'},
 			{name: "Note", label: 'Note'},
 			{name: "Events", label: 'Events'},
+			{name: "Extras", labal: 'Extras'}
 			{name: "Charting", label: 'Charting'},
 			{name: "Data", label: 'Data'},
 		];
@@ -888,6 +889,11 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(mirrorButton);
 
 		UI_box.addGroup(tab_group_section);
+	}
+
+	function addExtraUI():Void
+	{
+
 	}
 
 	var stepperSusLength:FlxUINumericStepper;

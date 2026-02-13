@@ -37,6 +37,7 @@ import psychlua.HScript;
 #end
 import psychlua.DebugLuaText;
 import psychlua.ModchartSprite;
+import psychlua.CustomLuaFunctions;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
@@ -1509,6 +1510,7 @@ class FunkinLua {
 		CustomSubstate.implement(this);
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
+		CustomLuaFunctions.implement(this);
 
 		try{
 			var isString:Bool = !FileSystem.exists(scriptName);

@@ -13,6 +13,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Chart Editor',
 		'Character Editor',
 		'Week Editor',
+		'Stage Editor',
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
