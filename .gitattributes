@@ -1,7 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 externs/** linguist-vendored
-wren/** linguist-vendored
-Makefile linguist-vendored
-*.c linguist-vendored
-*.h linguist-vendored
+*.lua linguist-language=Lua
