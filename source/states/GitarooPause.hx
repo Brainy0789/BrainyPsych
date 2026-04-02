@@ -1,6 +1,5 @@
-package;
+package states;
 
-//todo: reimplement this!
 
 import flixel.graphics.frames.FlxAtlasFrames;
 
@@ -63,11 +62,6 @@ class GitarooPause extends MusicBeatState
 			}
 			else
 			{
-				PlayState.usedPractice = false;
-				PlayState.changedDifficulty = false;
-				PlayState.seenCutscene = false;
-				PlayState.deathCounter = 0;
-				PlayState.cpuControlled = false;
 				MusicBeatState.switchState(new MainMenuState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}

@@ -152,6 +152,12 @@ class VisualsUISubState extends BaseOptionsMenu
 			'bool');
 		addOption(option);
 
+		var option:Option = new Option('Gitaroo Pause Menu',
+			"If checked, uses the old alternate pause screen.",
+			'useGitarooPause',
+			'bool');
+		addOption(option);
+
 		super();
 		add(notes);
 	}
