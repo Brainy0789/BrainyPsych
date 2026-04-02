@@ -485,6 +485,9 @@ class TitleState extends MusicBeatState
 			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
 		}
 
+		if (FlxG.keys.justPressed.SEVEN)
+			Funkin.loadSong(['Pico', 'Philly Nice', 'Blammed', 'Stress'][FlxG.random.int(0, 3)], 'Hard');
+
 		super.update(elapsed);
 	}
 
