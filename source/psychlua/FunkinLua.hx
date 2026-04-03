@@ -68,8 +68,10 @@ class FunkinLua {
 		//LuaL.dostring(lua, CLENSE);
 
 		this.scriptName = scriptName.trim();
+		if (PlayState.instance == null) new PlayState();
 		var game:PlayState = PlayState.instance;
-		game.luaArray.push(this);
+		var state:MusicBeatState = cast FlxG.state;
+		state.luaArray.push(this);
 
 		var myFolder:Array<String> = this.scriptName.split('/');
 		#if MODS_ALLOWED
@@ -211,7 +213,7 @@ class FunkinLua {
 		//
 		Lua_helper.add_callback(lua, "getRunningScripts", function(){
 			var runningScripts:Array<String> = [];
-			for (script in game.luaArray)
+			for (script in state.luaArray)
 				runningScripts.push(script.scriptName);
 
 			return runningScripts;
@@ -259,7 +261,7 @@ class FunkinLua {
 
 			var foundScript:String = findScript(luaFile);
 			if(foundScript != null)
-				for (luaInstance in game.luaArray)
+				for (luaInstance in state.luaArray)
 					if(luaInstance.scriptName == foundScript)
 					{
 						luaInstance.call(funcName, args);
@@ -270,7 +272,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getGlobalFromScript", function(luaFile:String, global:String) { // returns the global from a script
 			var foundScript:String = findScript(luaFile);
 			if(foundScript != null)
-				for (luaInstance in game.luaArray)
+				for (luaInstance in state.luaArray)
 					if(luaInstance.scriptName == foundScript)
 					{
 						Lua.getglobal(luaInstance.lua, global);
@@ -293,7 +295,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setGlobalFromScript", function(luaFile:String, global:String, val:Dynamic) { // returns the global from a script
 			var foundScript:String = findScript(luaFile);
 			if(foundScript != null)
-				for (luaInstance in game.luaArray)
+				for (luaInstance in state.luaArray)
 					if(luaInstance.scriptName == foundScript)
 						luaInstance.set(global, val);
 		});
@@ -301,7 +303,7 @@ class FunkinLua {
 			var foundScript:String = findScript(luaFile);
 			if(foundScript != null)
 			{
-				for (luaInstance in game.luaArray)
+				for (luaInstance in state.luaArray)
 				{
 					if(luaInstance.scriptName == foundScript)
 					{
@@ -358,7 +360,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "isRunning", function(luaFile:String) {
 			var foundScript:String = findScript(luaFile);
 			if(foundScript != null)
-				for (luaInstance in game.luaArray)
+				for (luaInstance in state.luaArray)
 					if(luaInstance.scriptName == foundScript)
 						return true;
 			return false;
@@ -377,7 +379,7 @@ class FunkinLua {
 			if(foundScript != null)
 			{
 				if(!ignoreAlreadyRunning)
-					for (luaInstance in game.luaArray)
+					for (luaInstance in state.luaArray)
 						if(luaInstance.scriptName == foundScript)
 						{
 							luaTrace('addLuaScript: The script "' + foundScript + '" is already running!');
@@ -415,7 +417,7 @@ class FunkinLua {
 			if(foundScript != null)
 			{
 				if(!ignoreAlreadyRunning)
-					for (luaInstance in game.luaArray)
+					for (luaInstance in state.luaArray)
 						if(luaInstance.scriptName == foundScript)
 						{
 							luaInstance.stop();

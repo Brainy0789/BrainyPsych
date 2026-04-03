@@ -5,6 +5,10 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import backend.PsychCamera;
 
+#if LUA_ALLOWED
+import psychlua.*;
+#end
+
 class MusicBeatState extends FlxUIState
 {
 	private var curSection:Int = 0;
@@ -16,6 +20,9 @@ class MusicBeatState extends FlxUIState
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;
 	public var controls(get, never):Controls;
+
+	#if LUA_ALLOWED public var luaArray:Array<FunkinLua> = new Array(); #end
+
 	private function get_controls()
 	{
 		return Controls.instance;
@@ -23,11 +30,57 @@ class MusicBeatState extends FlxUIState
 
 	var _psychCameraInitialized:Bool = false;
 
+	#if LUA_ALLOWED
+	var lua:FunkinLua;
+
+	private inline function callLua(func:String, ?args:Array<Dynamic>)
+	{
+		if (args == null) args = new Array();
+		if (lua != null)
+		{
+			lua.call(func, args);
+		}
+	}
+
+	public function startLuasNamed(luaFile:String)
+	{
+		#if MODS_ALLOWED
+		var luaToLoad:String = Paths.modFolders(luaFile);
+		if(!FileSystem.exists(luaToLoad))
+			luaToLoad = Paths.getSharedPath(luaFile);
+
+		if(FileSystem.exists(luaToLoad))
+		#elseif sys
+		var luaToLoad:String = Paths.getSharedPath(luaFile);
+		if(OpenFlAssets.exists(luaToLoad))
+		#end
+		{
+			for (script in luaArray)
+				if(script.scriptName == luaToLoad) return false;
+
+			new FunkinLua(luaToLoad);
+			return true;
+		}
+		return false;
+	}
+	#end
+
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
 		if(!_psychCameraInitialized) initPsychCamera();
+
+
+		/*
+		#if LUA_ALLOWED
+		var inst:Class<MusicBeatState> = Type.getClass(this);
+		var className = Type.getClassName(inst).replace('states.', '');
+		trace(className);
+
+		startLuasNamed('states/' + className + '.lua');
+		callLua('onCreate');
+		#end*/
 
 		super.create();
 
@@ -36,6 +89,10 @@ class MusicBeatState extends FlxUIState
 		}
 		FlxTransitionableState.skipNextTransOut = false;
 		timePassedOnState = 0;
+
+		#if LUA_ALLOWED
+		callLua('onCreatePost');
+		#end
 	}
 
 	public function initPsychCamera():PsychCamera
@@ -45,12 +102,18 @@ class MusicBeatState extends FlxUIState
 		FlxG.cameras.setDefaultDrawTarget(camera, true);
 		_psychCameraInitialized = true;
 		//trace('initialized psych camera ' + Sys.cpuTime());
+		#if LUA_ALLOWED
+		callLua('onCameraInit');
+		#end
 		return camera;
 	}
 
 	public static var timePassedOnState:Float = 0;
 	override function update(elapsed:Float)
 	{
+		#if LUA_ALLOWED
+		callLua('onUpdate', [elapsed]);
+		#end
 		//everyStep();
 		var oldStep:Int = curStep;
 		timePassedOnState += elapsed;
@@ -79,6 +142,10 @@ class MusicBeatState extends FlxUIState
 		});
 
 		super.update(elapsed);
+
+		#if LUA_ALLOWED
+		callLua('onUpdatePost', [elapsed]);
+		#end
 	}
 
 	private function updateSection():Void
