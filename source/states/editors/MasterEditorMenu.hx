@@ -17,7 +17,8 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
-		'Note Splash Debug'
+		'Note Splash Debug',
+		'Random Song'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -119,6 +120,11 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Debug':
 					MusicBeatState.switchState(new NoteSplashDebugState());
+				case 'Random Song':
+					backend.WeekData.reloadWeekFiles();
+					var weekData = backend.WeekData.weeksLoaded.get(backend.WeekData.weeksList[FlxG.random.int(0, backend.WeekData.weeksList.length - 1)]);
+					Funkin.loadSong(weekData.songs[FlxG.random.int(0, weekData.songs.length - 1)][0], "Hard");
+					
 			}
 			FlxG.sound.music.volume = 0;
 			FreeplayState.destroyFreeplayVocals();
